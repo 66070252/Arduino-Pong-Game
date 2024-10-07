@@ -7,7 +7,7 @@ https://66070252.github.io/Arduino-Pong-Game/
 | --- | -------- | --------------------- | ------------------------------ |
 |   <img height="150" src="" width="150"/>  | 66070038 | ชยพล ชื่นชาวนา       | Coding               |
 |   <img height="150" src="" width="150"/>  | 66070040 | ชลณวัตร ศรีวรกุล | illustrator              |
-|   <img height="150" src="" width="150"/>  | 66070252 | ชาญชัย ธรรมโชติ    | Web page     |
+|   <img height="150" src="assets/5679268.jpg" width="150"/>  | 66070252 | ชาญชัย ธรรมโชติ    | Web page     |
 
 ## 🖥️ Demo
 You can watch video demo of the project: [Video Demo](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
