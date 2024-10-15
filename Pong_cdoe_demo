@@ -12,9 +12,13 @@ int butPin = 12;
 int butPin2 = 11;
 int butPin3 = 7;
 int butPin4 = 6;
+const int PIN_RED = 10;
+const int PIN_GREEN = 9;
+const int PIN_BLUE = 8;
 int myRow = 4;
 int myRow2 = 5;
 int myRow3 = 6;
+int myRowEx = 7;
 int myRow4 = 4;
 int myRow5 = 5;
 int myRow6 = 6;
@@ -22,12 +26,16 @@ int butVal;
 int butVal2;
 int butVal3;
 int butVal4;
+int player_1 = 0;
 int rowInc = 1;
 int Time = 1;
 int game_over = 0;
-
+int select = 0;
+int random_direction = random(1,5);
 int i;
 int j;
+int P1_down = 0;
+int P1_up = 1;
 
 byte frame[8][12];
 byte image1[8][12] = {
@@ -60,6 +68,16 @@ byte Win[8][12] = {
         { 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 },
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
       };
+byte Select_frame[8][12] = {
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+        { 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0 },
+        { 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+        { 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1 },
+        { 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
+        { 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+      };
 
 void setup() {
   Serial.begin(br);
@@ -68,24 +86,75 @@ void setup() {
   pinMode(butPin2, INPUT_PULLUP);
   pinMode(butPin3, INPUT_PULLUP);
   pinMode(butPin4, INPUT_PULLUP);
+
+  pinMode(PIN_RED, OUTPUT);
+  pinMode(PIN_GREEN, OUTPUT);
+  pinMode(PIN_BLUE, OUTPUT);
 }
 
 void loop() {
-  while (game_over != 1){
+  while (select == 0){
+    matrix.renderBitmap(Select_frame,8,12);
+    Select_frame[8][12] = 1;
+    if (digitalRead(butPin) == LOW){
+      player_1 = 1;
+      select = 1;
+    }
+    if (digitalRead(butPin2) == LOW){
+      player_1 = 2;
+      select = 1;
+    }
+    if (select == 1){
+      matrix.renderBitmap(Select_frame,8,12);
+      Select_frame[8][12] = 0;
+    }
+    if (player_1 == 0){
+      digitalWrite(PIN_RED, HIGH);
+      digitalWrite(PIN_BLUE, HIGH);
+      digitalWrite(PIN_GREEN, HIGH);
+    }
+  }
+  while (game_over != 1 && select == 1){
   butVal = digitalRead(butPin);
   butVal2 = digitalRead(butPin2);
   butVal3 = digitalRead(butPin3);
   butVal4 = digitalRead(butPin4);
 
-  if (butVal == 0 && myRow3 != 7){
+  if (player_1 == 1){
+    digitalWrite(PIN_RED, LOW);
+  }
+  if (player_1 == 2){
+    digitalWrite(PIN_BLUE, LOW);
+  }
+  if (butVal == 0 && myRow3 != 7 && player_1 == 1){
     myRow = myRow + rowInc;
     myRow2 = myRow2 + rowInc;
     myRow3 = myRow3 + rowInc;
   }
-  if (butVal2 == 0 && myRow != 0){
+  if (butVal2 == 0 && myRow != 0 && player_1 == 1){
     myRow = myRow - rowInc;
     myRow2 = myRow2 - rowInc;
     myRow3 = myRow3 - rowInc;
+  }
+  if (butVal == 0 && player_1 == 2){
+    P1_down = 1;
+    P1_up = 0;
+  }
+  if (butVal2 == 0 && player_1 == 2){
+    P1_down = 0;
+    P1_up = 1;
+  }
+  if (P1_down == 1 && myRowEx != 7 && player_1 == 2){
+    myRow = myRow + rowInc;
+    myRow2 = myRow2 + rowInc;
+    myRow3 = myRow3 + rowInc;
+    myRowEx = myRowEx + rowInc;
+  }
+  if (P1_up == 1 && myRow != 0 && player_1 == 2){
+    myRow = myRow - rowInc;
+    myRow2 = myRow2 - rowInc;
+    myRow3 = myRow3 - rowInc;
+    myRowEx = myRowEx - rowInc;
   }
   if (butVal3 == 0 && myRow6 != 7){
     myRow4 = myRow4 + rowInc;
@@ -111,6 +180,9 @@ void loop() {
           frame[j][i] = 1;
         }
         if (i == 0 && j == myRow3) {
+          frame[j][i] = 1;
+        }
+        if (i == 0 && j == myRowEx && player_1 == 2) {
           frame[j][i] = 1;
         }
         if (i == 11 && j == myRow4) {
@@ -146,6 +218,10 @@ void loop() {
     }
     if (xPos <= 0 && (yPos == myRow || yPos == myRow2 || yPos == myRow3)){
       deltaX = -deltaX;
+      if (dt > 5){
+        dt = dt - 5;
+        Serial.println(dt);
+      }
     }
 
     if (xPos >= 11 && (yPos != myRow4 && yPos != myRow5 && yPos != myRow6)){
@@ -166,10 +242,25 @@ void loop() {
     }
     if (xPos >= 11 && (yPos == myRow4 || yPos == myRow5 || yPos == myRow6)){
       deltaX = -deltaX;
+      if (dt > 5){
+        dt = dt - 5;
+        Serial.println(dt);
+      }
     }
 
-    xPos=xPos+deltaX;
-    yPos=yPos+deltaY;
+    if (random_direction == 1){
+      xPos=xPos+deltaX;
+      yPos=yPos+deltaY;
+    }else if (random_direction == 2){
+      xPos=xPos-deltaX;
+      yPos=yPos+deltaY;
+    }else if (random_direction == 3){
+      xPos=xPos+deltaX;
+      yPos=yPos-deltaY;
+    }else if (random_direction == 4){
+      xPos=xPos-deltaX;
+      yPos=yPos-deltaY;
+    }
    
     Time = Time + 1;
     delay(dt);
