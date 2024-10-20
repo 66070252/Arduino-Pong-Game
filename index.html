@@ -26,10 +26,11 @@
             text-align: center;
             margin-bottom: 40px;
         }
-        .video-container video {
+        .video-container iframe {
             width: 80%;
             max-width: 800px;
-            height: auto;
+            height: 450px;
+            border: none;
         }
         .image-container {
             text-align: center;
@@ -53,21 +54,25 @@
 
     <div class="container">
         <h1>Arduino Pong Project</h1>
-        <h2>Using LED matrix in board</h2>
         
         <!-- วิดีโอจาก YouTube -->
         <div class="video-container">
-            <iframe src="https://www.youtube.com/watch?v=dQw4w9WgXcQ" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
         </div>
 
         <!-- ภาพขนาด A1 -->
         <div class="image-container">
-            <img src="your-image-file.jpg" alt="Project Image A1">
+            <img src="assets/5679268.jpg" alt="Project Image A1">
         </div>
 
         <!-- คำอธิบาย -->
         <div class="description">
-            <p>คำอธิบาย</p>
+            <p>คำอธิบายโปรเจกต์</p>
         </div>
     </div>
 
