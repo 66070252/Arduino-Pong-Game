@@ -1,16 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Page</title>
+    <title>Project Presentation</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        h1 { color: navy; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .video-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .video-container video {
+            width: 80%;
+            max-width: 800px;
+            height: auto;
+        }
+        .image-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .image-container img {
+            width: 80%;
+            max-width: 600px;
+            height: auto;
+            border: 2px solid #ccc;
+        }
+        .description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to My GitHub Page</h1>
-    <p>This is a simple web page hosted on GitHub Pages!</p>
+
+    <div class="container">
+        <h1>Project Presentation</h1>
+        
+        <!-- วิดีโอ -->
+        <div class="video-container">
+            <video controls>
+                <source src="your-video-file.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- ภาพขนาด A1 -->
+        <div class="image-container">
+            <img src="your-image-file.jpg" alt="Project Image A1">
+        </div>
+
+        <!-- คำอธิบาย -->
+        <div class="description">
+            <p>นี่คือคำอธิบายโปรเจกต์ของคุณ ใส่ข้อมูลที่เกี่ยวกับโปรเจกต์ เช่น จุดประสงค์ วิธีการออกแบบ และผลลัพธ์ที่คาดหวัง.</p>
+        </div>
+    </div>
+
 </body>
 </html>
