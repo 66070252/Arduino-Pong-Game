@@ -10,11 +10,17 @@ int deltaY = 1;
 
 int butPin = 12;
 int butPin2 = 11;
+int butAbi1 = 13;
 int butPin3 = 7;
 int butPin4 = 6;
+int butAbi2 = 2;
 const int PIN_RED = 10;
 const int PIN_GREEN = 9;
 const int PIN_BLUE = 8;
+const int PIN_RED_2 = 5;
+const int PIN_GREEN_2 = 4;
+const int PIN_BLUE_2 = 3;
+
 int myRow = 4;
 int myRow2 = 5;
 int myRow3 = 6;
@@ -22,20 +28,29 @@ int myRowEx = 7;
 int myRow4 = 4;
 int myRow5 = 5;
 int myRow6 = 6;
+int myRowEx_2 = 7;
 int butVal;
 int butVal2;
 int butVal3;
 int butVal4;
+int butValAbi1;
+int butValAbi2;
 int player_1 = 0;
+int player_2 = 0;
 int rowInc = 1;
 int Time = 1;
 int game_over = 0;
-int select = 0;
 int random_direction = random(1,5);
 int i;
 int j;
 int P1_down = 0;
 int P1_up = 1;
+int P2_down = 0;
+int P2_up = 1;
+int mana_1 = 100;
+int mana_2 = 100;
+int Timestop_1 = 0;
+int Timestop_2 = 0;
 
 byte frame[8][12];
 byte image1[8][12] = {
@@ -86,25 +101,39 @@ void setup() {
   pinMode(butPin2, INPUT_PULLUP);
   pinMode(butPin3, INPUT_PULLUP);
   pinMode(butPin4, INPUT_PULLUP);
+  pinMode(butAbi1, INPUT_PULLUP);
+  pinMode(butAbi2, INPUT_PULLUP);
 
   pinMode(PIN_RED, OUTPUT);
   pinMode(PIN_GREEN, OUTPUT);
   pinMode(PIN_BLUE, OUTPUT);
+
+  pinMode(PIN_RED_2, OUTPUT);
+  pinMode(PIN_GREEN_2, OUTPUT);
+  pinMode(PIN_BLUE_2, OUTPUT);
 }
 
 void loop() {
-  while (select == 0){
+  while (player_1 == 0 || player_2 == 0){
     matrix.renderBitmap(Select_frame,8,12);
     Select_frame[8][12] = 1;
     if (digitalRead(butPin) == LOW){
       player_1 = 1;
-      select = 1;
+      digitalWrite(PIN_RED, LOW);
+    }
+    if (digitalRead(butPin3) == LOW){
+      player_2 = 1;
+      digitalWrite(PIN_RED_2, LOW);
     }
     if (digitalRead(butPin2) == LOW){
       player_1 = 2;
-      select = 1;
+      digitalWrite(PIN_BLUE, LOW);
     }
-    if (select == 1){
+    if (digitalRead(butPin4) == LOW){
+      player_2 = 2;
+      digitalWrite(PIN_BLUE_2, LOW);
+    }
+    if (player_1 != 0 && player_2 != 0){
       matrix.renderBitmap(Select_frame,8,12);
       Select_frame[8][12] = 0;
     }
@@ -113,18 +142,31 @@ void loop() {
       digitalWrite(PIN_BLUE, HIGH);
       digitalWrite(PIN_GREEN, HIGH);
     }
+    if (player_2 == 0){
+      digitalWrite(PIN_RED_2, HIGH);
+      digitalWrite(PIN_BLUE_2, HIGH);
+      digitalWrite(PIN_GREEN_2, HIGH);
+    }
   }
-  while (game_over != 1 && select == 1){
+  while (game_over != 1 && player_1 != 0 && player_2 != 0){
   butVal = digitalRead(butPin);
   butVal2 = digitalRead(butPin2);
   butVal3 = digitalRead(butPin3);
   butVal4 = digitalRead(butPin4);
+  butValAbi1 = digitalRead(butAbi1);
+  butValAbi2 = digitalRead(butAbi2);
 
   if (player_1 == 1){
     digitalWrite(PIN_RED, LOW);
   }
   if (player_1 == 2){
     digitalWrite(PIN_BLUE, LOW);
+  }
+  if (player_2 == 1){
+    digitalWrite(PIN_RED_2, LOW);
+  }
+  if (player_2 == 2){
+    digitalWrite(PIN_BLUE_2, LOW);
   }
   if (butVal == 0 && myRow3 != 7 && player_1 == 1){
     myRow = myRow + rowInc;
@@ -136,6 +178,14 @@ void loop() {
     myRow2 = myRow2 - rowInc;
     myRow3 = myRow3 - rowInc;
   }
+  if (butValAbi1 == 0 && player_1 == 1 && mana_1 > 0 && Time >= 25){
+    Timestop_1 = 1;
+    mana_1 = mana_1 - 1;  
+  }else {
+    Timestop_1 = 0;
+    mana_1 = mana_1 + 1;
+  }
+
   if (butVal == 0 && player_1 == 2){
     P1_down = 1;
     P1_up = 0;
@@ -156,15 +206,43 @@ void loop() {
     myRow3 = myRow3 - rowInc;
     myRowEx = myRowEx - rowInc;
   }
-  if (butVal3 == 0 && myRow6 != 7){
+  if (butVal3 == 0 && myRow6 != 7 && player_2 == 1){
     myRow4 = myRow4 + rowInc;
     myRow5 = myRow5 + rowInc;
     myRow6 = myRow6 + rowInc;
   }
-  if (butVal4 == 0 && myRow4 != 0){
+  if (butVal4 == 0 && myRow4 != 0 && player_2 == 1){
     myRow4 = myRow4 - rowInc;
     myRow5 = myRow5 - rowInc;
     myRow6 = myRow6 - rowInc;
+  }
+  if (butValAbi2 == 0 && player_2 == 1 && mana_1 > 0 && Time >= 25){
+    Timestop_2 = 1;
+    mana_2 = mana_2 - 1;  
+  }else {
+    Timestop_2 = 0;
+    mana_2 = mana_2 + 1;
+  }
+
+  if (butVal3 == 0 && player_2 == 2){
+    P2_down = 1;
+    P2_up = 0;
+  }
+  if (butVal4 == 0 && player_2 == 2){
+    P2_down = 0;
+    P2_up = 1;
+  }
+  if (P2_down == 1 && myRowEx_2 != 7 && player_2 == 2){
+    myRow4 = myRow4 + rowInc;
+    myRow5 = myRow5 + rowInc;
+    myRow6 = myRow6 + rowInc;
+    myRowEx_2 = myRowEx_2 + rowInc;
+  }
+  if (P2_up == 1 && myRow4 != 0 && player_2 == 2){
+    myRow4 = myRow4 - rowInc;
+    myRow5 = myRow5 - rowInc;
+    myRow6 = myRow6 - rowInc;
+    myRowEx_2 = myRowEx_2 - rowInc;
   }
 
     for (i = 0; i <= 11; i = i + 1){
@@ -192,6 +270,9 @@ void loop() {
           frame[j][i] = 1;
         }
         if (i == 11 && j == myRow6) {
+          frame[j][i] = 1;
+        }
+        if (i == 11 && j == myRowEx_2 && player_2 == 2) {
           frame[j][i] = 1;
         }
       }
@@ -248,18 +329,20 @@ void loop() {
       }
     }
 
-    if (random_direction == 1){
-      xPos=xPos+deltaX;
-      yPos=yPos+deltaY;
-    }else if (random_direction == 2){
-      xPos=xPos-deltaX;
-      yPos=yPos+deltaY;
-    }else if (random_direction == 3){
-      xPos=xPos+deltaX;
-      yPos=yPos-deltaY;
-    }else if (random_direction == 4){
-      xPos=xPos-deltaX;
-      yPos=yPos-deltaY;
+    if (Time >= 25 && (Timestop_1 == 0 && Timestop_2 == 0)){
+      if (random_direction == 1){
+        xPos=xPos+deltaX;
+        yPos=yPos+deltaY;
+      }else if (random_direction == 2){
+        xPos=xPos-deltaX;
+        yPos=yPos+deltaY;
+      }else if (random_direction == 3){
+        xPos=xPos+deltaX;
+        yPos=yPos-deltaY;
+      }else if (random_direction == 4){
+        xPos=xPos-deltaX;
+        yPos=yPos-deltaY;
+      }
     }
    
     Time = Time + 1;
