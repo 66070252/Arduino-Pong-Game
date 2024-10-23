@@ -51,6 +51,8 @@ int mana_1 = 100;
 int mana_2 = 100;
 int Timestop_1 = 0;
 int Timestop_2 = 0;
+int Puppet_1 = 0;
+int Puppet_2 = 0;
 
 byte frame[8][12];
 byte image1[8][12] = {
@@ -133,6 +135,14 @@ void loop() {
       player_2 = 2;
       digitalWrite(PIN_BLUE_2, LOW);
     }
+    if (digitalRead(butAbi1) == LOW){
+      player_1 = 3;
+      digitalWrite(PIN_GREEN, LOW);
+    }
+    if (digitalRead(butAbi2) == LOW){
+      player_2 = 3;
+      digitalWrite(PIN_GREEN_2, LOW);
+    }
     if (player_1 != 0 && player_2 != 0){
       matrix.renderBitmap(Select_frame,8,12);
       Select_frame[8][12] = 0;
@@ -156,17 +166,35 @@ void loop() {
   butValAbi1 = digitalRead(butAbi1);
   butValAbi2 = digitalRead(butAbi2);
 
-  if (player_1 == 1){
+  if (player_1 == 1 && mana_1 > 25){
     digitalWrite(PIN_RED, LOW);
+  }else{
+    digitalWrite(PIN_RED, HIGH);
   }
-  if (player_1 == 2){
+  if (player_1 == 2 && mana_1 > 25){
     digitalWrite(PIN_BLUE, LOW);
+  }else{
+    digitalWrite(PIN_BLUE, HIGH);
   }
-  if (player_2 == 1){
+  if (player_1 == 3 && mana_1 > 25){
+    digitalWrite(PIN_GREEN, LOW);
+  }else{
+    digitalWrite(PIN_GREEN, HIGH);
+  }
+  if (player_2 == 1 && mana_2 > 25){
     digitalWrite(PIN_RED_2, LOW);
+  }else{
+    digitalWrite(PIN_RED_2, HIGH);
   }
-  if (player_2 == 2){
+  if (player_2 == 2 && mana_2 > 25){
     digitalWrite(PIN_BLUE_2, LOW);
+  }else{
+    digitalWrite(PIN_BLUE_2, HIGH);
+  }
+  if (player_2 == 3 && mana_2 > 25){
+    digitalWrite(PIN_GREEN_2, LOW);
+  }else{
+    digitalWrite(PIN_GREEN_2, HIGH);
   }
   if (butVal == 0 && myRow3 != 7 && player_1 == 1){
     myRow = myRow + rowInc;
@@ -178,12 +206,11 @@ void loop() {
     myRow2 = myRow2 - rowInc;
     myRow3 = myRow3 - rowInc;
   }
-  if (butValAbi1 == 0 && player_1 == 1 && mana_1 > 0 && Time >= 25){
+  if (butValAbi1 == 0 && player_1 == 1 && mana_1 > 25 && Time >= 25){
     Timestop_1 = 1;
-    mana_1 = mana_1 - 1;  
+    mana_1 = mana_1 - 25;  
   }else {
     Timestop_1 = 0;
-    mana_1 = mana_1 + 1;
   }
 
   if (butVal == 0 && player_1 == 2){
@@ -206,6 +233,34 @@ void loop() {
     myRow3 = myRow3 - rowInc;
     myRowEx = myRowEx - rowInc;
   }
+  if (butValAbi1 == 0 && player_1 == 2 && mana_1 > 25 && Time >= 25){
+    deltaX = -deltaX;
+    mana_1 = mana_1 - 25;  
+  }
+
+  if (butVal == 0 && myRow2 != 7 && player_1 == 3 && Puppet_1 != 1){
+    myRow = myRow + rowInc;
+    myRow2 = myRow2 + rowInc;
+  }
+  if (butVal2 == 0 && myRow != 0 && player_1 == 3 && Puppet_1 != 1){
+    myRow = myRow - rowInc;
+    myRow2 = myRow2 - rowInc;
+  }
+  if (butValAbi1 == 0 && player_1 == 3 && mana_1 > 25 && Time >= 25){
+    Puppet_1 = 1;
+    mana_1 = mana_1 - 2;  
+  }else{
+    Puppet_1 = 0;
+  }
+  if (Puppet_1 == 1 && butVal == 0 && myRowEx != 7){
+    myRow3 = myRow3 + rowInc;
+    myRowEx = myRowEx + rowInc;
+  }
+  if (Puppet_1 == 1 && butVal2 == 0 && myRow3 != 0){
+    myRow3 = myRow3 - rowInc;
+    myRowEx = myRowEx - rowInc;
+  }
+
   if (butVal3 == 0 && myRow6 != 7 && player_2 == 1){
     myRow4 = myRow4 + rowInc;
     myRow5 = myRow5 + rowInc;
@@ -216,12 +271,11 @@ void loop() {
     myRow5 = myRow5 - rowInc;
     myRow6 = myRow6 - rowInc;
   }
-  if (butValAbi2 == 0 && player_2 == 1 && mana_1 > 0 && Time >= 25){
+  if (butValAbi2 == 0 && player_2 == 1 && mana_2 > 25 && Time >= 25){
     Timestop_2 = 1;
-    mana_2 = mana_2 - 1;  
+    mana_2 = mana_2 - 25;  
   }else {
     Timestop_2 = 0;
-    mana_2 = mana_2 + 1;
   }
 
   if (butVal3 == 0 && player_2 == 2){
@@ -244,6 +298,33 @@ void loop() {
     myRow6 = myRow6 - rowInc;
     myRowEx_2 = myRowEx_2 - rowInc;
   }
+  if (butValAbi2 == 0 && player_2 == 2 && mana_2 > 25 && Time >= 25){
+    deltaX = -deltaX;
+    mana_2 = mana_2 - 25;  
+  }
+
+  if (butVal3 == 0 && myRow5 != 7 && player_2 == 3 && Puppet_2 != 1){
+    myRow4 = myRow4 + rowInc;
+    myRow5 = myRow5 + rowInc;
+  }
+  if (butVal4 == 0 && myRow4 != 0 && player_2 == 3 && Puppet_2 != 1){
+    myRow4 = myRow4 - rowInc;
+    myRow5 = myRow5 - rowInc;
+  }
+  if (butValAbi2 == 0 && player_2 == 3 && mana_2 > 25 && Time >= 25){
+    Puppet_2 = 1;
+    mana_2 = mana_2 - 2;  
+  }else{
+    Puppet_2 = 0;
+  }
+  if (Puppet_2 == 1 && butVal3 == 0 && myRowEx_2 != 7){
+    myRow6 = myRow6 + rowInc;
+    myRowEx_2 = myRowEx_2 + rowInc;
+  }
+  if (Puppet_2 == 1 && butVal4 == 0 && myRow6 != 0){
+    myRow6 = myRow6 - rowInc;
+    myRowEx_2 = myRowEx_2 - rowInc;
+  }
 
     for (i = 0; i <= 11; i = i + 1){
       for (j = 0; j <= 7; j = j + 1){
@@ -260,7 +341,7 @@ void loop() {
         if (i == 0 && j == myRow3) {
           frame[j][i] = 1;
         }
-        if (i == 0 && j == myRowEx && player_1 == 2) {
+        if (i == 0 && j == myRowEx && (player_1 == 2 || player_1 == 3)) {
           frame[j][i] = 1;
         }
         if (i == 11 && j == myRow4) {
@@ -272,7 +353,7 @@ void loop() {
         if (i == 11 && j == myRow6) {
           frame[j][i] = 1;
         }
-        if (i == 11 && j == myRowEx_2 && player_2 == 2) {
+        if (i == 11 && j == myRowEx_2 && (player_2 == 2 || player_2 == 3)) {
           frame[j][i] = 1;
         }
       }
@@ -281,11 +362,7 @@ void loop() {
       if (yPos>=7 || yPos<=0){
         deltaY = -deltaY;
       }
-    if (xPos <= 0 && (yPos != myRow && yPos != myRow2 && yPos != myRow3)){
-      Serial.println(yPos);
-      Serial.println(myRow);
-      Serial.println(myRow2);
-      Serial.println(myRow3);
+    if (xPos <= 0 && ((yPos != myRow && yPos != myRow2 && yPos != myRow3) || (yPos != myRow && yPos != myRow2 && yPos != myRow3 && yPos != myRowEx && (player_1 == 2 || player_1 == 3)))){
       matrix.renderBitmap(frame,8,12);
       frame[8][12] = 0;
       matrix.renderBitmap(image1,8,12);
@@ -297,7 +374,7 @@ void loop() {
       Win[8][12] = 1;
       game_over = 1;
     }
-    if (xPos <= 0 && (yPos == myRow || yPos == myRow2 || yPos == myRow3)){
+    if (xPos <= 0 && ((yPos == myRow || yPos == myRow2 || yPos == myRow3) || ( yPos == myRow || yPos == myRow2 || yPos == myRow3 || yPos == myRowEx && (player_1 == 2 || player_1 == 3)))){
       deltaX = -deltaX;
       if (dt > 5){
         dt = dt - 5;
@@ -305,11 +382,7 @@ void loop() {
       }
     }
 
-    if (xPos >= 11 && (yPos != myRow4 && yPos != myRow5 && yPos != myRow6)){
-      Serial.println(yPos);
-      Serial.println(myRow4);
-      Serial.println(myRow5);
-      Serial.println(myRow6);
+    if (xPos >= 11 && ((yPos != myRow4 && yPos != myRow5 && yPos != myRow6) || (yPos != myRow4 && yPos != myRow5 && yPos != myRow6 && yPos != myRowEx_2 && (player_2 == 2 || player_2 == 3)))){
       matrix.renderBitmap(frame,8,12);
       frame[8][12] = 0;
       matrix.renderBitmap(image2,8,12);
@@ -321,7 +394,7 @@ void loop() {
       Win[8][12] = 1;
       game_over = 1;
     }
-    if (xPos >= 11 && (yPos == myRow4 || yPos == myRow5 || yPos == myRow6)){
+    if (xPos >= 11 && ((yPos == myRow4 || yPos == myRow5 || yPos == myRow6) || (yPos == myRow4 || yPos == myRow5 || yPos == myRow6 || yPos == myRowEx_2 && (player_2 == 2 || player_2 == 3)))){
       deltaX = -deltaX;
       if (dt > 5){
         dt = dt - 5;
@@ -344,7 +417,15 @@ void loop() {
         yPos=yPos-deltaY;
       }
     }
-   
+
+    if (mana_1 < 100){
+      mana_1 += 1;
+      Serial.println(mana_1);
+    }
+    if (mana_2 < 100){
+      mana_2 += 1;
+      Serial.println(mana_2);
+    }
     Time = Time + 1;
     delay(dt);
   }
