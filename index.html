@@ -1,80 +1,166 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Presentation</title>
+    <title>Arduino Pong Project</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #1b1b2f;
+            color: white;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
+        
         .container {
             width: 80%;
-            margin: auto;
+            max-width: 1200px;
             padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+
+        .header {
+            text-align: center;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .project-poster {
+            display: block;
+            margin: 0 auto 20px;
+            width: 100%;
+            height: auto;
+        }
+
+        .youtube-link {
             text-align: center;
             margin-bottom: 20px;
         }
-        .video-container {
+
+        .youtube-link a {
+            background-color: #ff006e;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 10px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .video-demo {
+            flex: 1;
+            padding: 10px;
+        }
+
+        .video-demo iframe {
+            width: 100%;
+            height: 300px;
+        }
+
+        .project-description {
+            flex: 1;
+            padding: 10px;
+            border-left: 2px dashed #888;
+        }
+
+        .project-description h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .project-description p {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .members {
+            margin-top: 30px;
+        }
+
+        .members table {
+            width: 100%;
+            border-collapse: collapse;
             text-align: center;
-            margin-bottom: 40px;
         }
-        .video-container iframe {
-            width: 80%;
-            max-width: 800px;
-            height: 450px;
-            border: none;
+
+        .members th, .members td {
+            padding: 10px;
+            border: 1px solid #444;
         }
-        .image-container {
-            text-align: center;
-            margin-bottom: 40px;
+
+        .members th {
+            background-color: #24243e;
         }
-        .image-container img {
-            width: 80%;
-            max-width: 600px;
+
+        .members img {
+            width: 100px;
             height: auto;
-            border: 2px solid #ccc;
-        }
-        .description {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            text-align: center;
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Arduino Pong Project</h1>
-        
-        <!-- วิดีโอจาก YouTube -->
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-            </iframe>
+        <div class="header">
+            Arduino Pong
         </div>
 
-        <!-- ภาพขนาด A1 -->
-        <div class="image-container">
-            <img src="assets/5679268.jpg" alt="Project Image A1">
+        <img src="assets/5679268.jpg" alt="Project Poster" class="project-poster">
+
+        <div class="youtube-link">
+            <a href="https://www.youtube.com/embed/VAeBuYQ5sW4" target="_blank">Link Youtube</a>
         </div>
 
-        <!-- คำอธิบาย -->
-        <div class="description">
-            <p>คำอธิบายโปรเจกต์</p>
+        <div class="content">
+            <div class="video-demo">
+                <iframe src="https://www.youtube.com/embed/VAeBuYQ5sW4" title="Arduino Pong Demo" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="project-description">
+                <h2>Pong ที่เล่นได้ใน Board Arduino</h2>
+                <p>
+                    เป็นเกมที่เรารู้จักกันดีอย่าง pong ซึ่งครั้งนี้เราสามารถเล่นได้ผ่าน board Arduino โดย board ที่ใช้เป็นรุ่น Arduino Uno R4 wifi
+                </p>
+            </div>
+        </div>
+
+        <div class="members">
+            <h2>สมาชิก</h2>
+            <table>
+                <tr>
+                    <th>รูป</th>
+                    <th>รหัสนักศึกษา</th>
+                    <th>ชื่อ</th>
+                    <th>ส่วนที่รับผิดชอบ</th>
+                </tr>
+                <tr>
+                    <td><img src="assets/1.jpg" alt="Member 1"></td>
+                    <td>660700838</td>
+                    <td>ชยพล ชื่นชาวนา</td>
+                    <td>Coding</td>
+                </tr>
+                <tr>
+                    <td><img src="assets/5679268.jpg" alt="Member 2"></td>
+                    <td>660700040</td>
+                    <td>ชลณวัตร ศรีวรกุล</td>
+                    <td>Illustrator</td>
+                </tr>
+                <tr>
+                    <td><img src="assets/3.jpg" alt="Member 3"></td>
+                    <td>660700252</td>
+                    <td>ชาญชัย ธรรมโชติ (โอม)</td>
+                    <td>Web page</td>
+                </tr>
+            </table>
         </div>
     </div>
-
 </body>
 </html>
