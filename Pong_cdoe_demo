@@ -116,6 +116,8 @@ void setup() {
 }
 
 void loop() {
+
+  //SELECT CHARACTER//
   while (player_1 == 0 || player_2 == 0){
     matrix.renderBitmap(Select_frame,8,12);
     Select_frame[8][12] = 1;
@@ -158,6 +160,8 @@ void loop() {
       digitalWrite(PIN_GREEN_2, HIGH);
     }
   }
+  
+  //GAME RUN//
   while (game_over != 1 && player_1 != 0 && player_2 != 0){
   butVal = digitalRead(butPin);
   butVal2 = digitalRead(butPin2);
@@ -166,6 +170,7 @@ void loop() {
   butValAbi1 = digitalRead(butAbi1);
   butValAbi2 = digitalRead(butAbi2);
 
+  //LED ON//
   if (player_1 == 1 && mana_1 > 25){
     digitalWrite(PIN_RED, LOW);
   }else{
@@ -196,6 +201,8 @@ void loop() {
   }else{
     digitalWrite(PIN_GREEN_2, HIGH);
   }
+
+  //PLAYER 1 CONTROL//
   if (butVal == 0 && myRow3 != 7 && player_1 == 1){
     myRow = myRow + rowInc;
     myRow2 = myRow2 + rowInc;
@@ -260,7 +267,8 @@ void loop() {
     myRow3 = myRow3 - rowInc;
     myRowEx = myRowEx - rowInc;
   }
-
+  
+  //PLAYER 2 CONTROL//
   if (butVal3 == 0 && myRow6 != 7 && player_2 == 1){
     myRow4 = myRow4 + rowInc;
     myRow5 = myRow5 + rowInc;
@@ -326,6 +334,7 @@ void loop() {
     myRowEx_2 = myRowEx_2 - rowInc;
   }
 
+    //DRAW GRAPHIC//
     for (i = 0; i <= 11; i = i + 1){
       for (j = 0; j <= 7; j = j + 1){
         frame[j][i] = 0;
@@ -358,10 +367,14 @@ void loop() {
         }
       }
     }
+    
+    //BALL BOUCING WHEN TOUCH WALL//
     matrix.renderBitmap(frame,8,12);
       if (yPos>=7 || yPos<=0){
         deltaY = -deltaY;
       }
+
+    //GAME OVER CODE AND BALL BOUCING WHEN TOUCH BOARD//
     if (xPos <= 0 && ((yPos != myRow && yPos != myRow2 && yPos != myRow3) || (yPos != myRow && yPos != myRow2 && yPos != myRow3 && yPos != myRowEx && (player_1 == 2 || player_1 == 3)))){
       matrix.renderBitmap(frame,8,12);
       frame[8][12] = 0;
@@ -381,7 +394,7 @@ void loop() {
         Serial.println(dt);
       }
     }
-
+    
     if (xPos >= 11 && ((yPos != myRow4 && yPos != myRow5 && yPos != myRow6) || (yPos != myRow4 && yPos != myRow5 && yPos != myRow6 && yPos != myRowEx_2 && (player_2 == 2 || player_2 == 3)))){
       matrix.renderBitmap(frame,8,12);
       frame[8][12] = 0;
@@ -401,7 +414,8 @@ void loop() {
         Serial.println(dt);
       }
     }
-
+    
+    //BALL MOVING AND RANDOM DIRECTION//
     if (Time >= 25 && (Timestop_1 == 0 && Timestop_2 == 0)){
       if (random_direction == 1){
         xPos=xPos+deltaX;
@@ -418,6 +432,7 @@ void loop() {
       }
     }
 
+    //MANA AND TIME//
     if (mana_1 < 100){
       mana_1 += 1;
       Serial.println(mana_1);
